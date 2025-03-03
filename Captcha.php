@@ -26,11 +26,7 @@ class Captcha
         $this->font = $font;
         $this->iconFont = $iconFont;
         $this->elements = $elements;
-    }
 
-    public function PrepareCaptcha()
-    {
-        // You should to find an icon unicode
         $this->icons = [
             [hexdec("f102"), "fa-angles-up"],
             [hexdec("f121"), "fa-code"],
@@ -134,44 +130,5 @@ class Captcha
     public function GetCaptchaImage()
     {
         return $this->image;
-    }
-
-    public function IsVerified()
-    {
-        if (empty($_SESSION['captcha_verified'])) {
-            return false;
-        }
-
-        if (time() - $_SESSION['captcha_verified_time'] > 10800) {
-            $_SESSION['captcha_verified'] = false;
-            return false;
-        }
-
-        return $_SESSION['captcha_verified'];
-    }
-
-    public function VerifyCaptcha($captcha)
-    {
-        if (empty($_SESSION['captcha'])) {
-            $_SESSION['err'] = true;
-            $_SESSION['err_text'] = "Captcha is empty";
-            return false;
-        }
-
-        if ($captcha !== $_SESSION['captcha']) {
-            $_SESSION['err'] = true;
-            $_SESSION['err_text'] = "Captcha is incorrect";
-            return false;
-        }
-
-        if (time() - $_SESSION['captcha_time'] > 180) {
-            $_SESSION['err'] = true;
-            $_SESSION['err_text'] = "Captcha is expired";
-            return false;
-        }
-
-        $_SESSION['captcha_verified'] = true;
-        $_SESSION['captcha_verified_time'] = time();
-        return true;
     }
 }
