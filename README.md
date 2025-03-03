@@ -1,5 +1,5 @@
 # Font-Awesome-Captcha
-[![License](https://img.shields.io/badge/Version-1.0-green?style=for-the-badge)](https://opensource.org/licenses/MIT)
+[![License](https://img.shields.io/badge/Version-1.1-green?style=for-the-badge)](https://opensource.org/licenses/MIT)
 [![App Version](https://img.shields.io/badge/License-MIT-lightgreen?style=for-the-badge)](https://github.com/VMWRITE/Font-Awesome-Captcha/)
 
 
@@ -16,31 +16,46 @@ A simple captcha which using a font-awesome to render.
 
 ## How to use
 
+Initialization file. For example: "Captcha.File.php"
 ```php
 <?php
 require_once "Captcha.php";
 
-$captcha = new Captcha(400, 100, 6,
-    $GLOBALS['ROOT'] . "/assets/fonts/fa-solid-900.ttf",
-    $GLOBALS['ROOT'] . "/assets/fonts/MONTSERRAT-EXTRABOLD.TTF"
-);
+$rootPath = $GLOBALS['ROOT'];
 
-$captcha->PrepareCaptcha();
+$captchaWidth = 400; // output image size in X
+$captchaHeight = 100; // output image size in Y
+$elementsCount = 6; // how much symbols should be generated
+$pathToIcons = "$rootPath/YourIconFont.ttf"; // replace it to your path
+$pathToFont = "$rootPath/YourTextFont.ttf"; // replace it to your path
+
+$captcha = new Captcha($captchaWidth, $captchaHeight, $elementsCount, $pathToIcons, $pathToFont);
+
 $captcha->GenerateCaptcha();
+?>
+```
 
-$server_ip = $_SERVER['SERVER_ADDR'];
-$client_ip = $_SERVER['REMOTE_ADDR'];
+Usage
+```php
+<?php
+require_once "Captcha.File.php";
 
-if ($captcha->IsVerified() === false && /*Ignoring internal requests*/ $server_ip != $client_ip) {
-    require_once "modules/Forum/Forum.Captcha.php";
-    exit;
-}
+$captchaImage = $captcha->GetCaptchaImage();
 
+echo "<img src='data:image/png;base64," . base64_encode($captchaImage) . "' />";
+
+$captchaText = $captcha->GetCaptchaText();
+
+echo "<pre>";
+print_r($captchaText);
+echo "</pre>";
 ?>
 ```
 
 # Credits
 - Beer
-  * Helped me create this
+  * Helped me create this
 - VMWRITE (me)
-  
+  * Created the captcha
+
+
